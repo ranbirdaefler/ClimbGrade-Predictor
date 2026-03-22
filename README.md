@@ -120,16 +120,6 @@ climb-pred/
 
 - **Vision:** DINOv2 ViT-B/14 (Meta)
 - **GNN:** GATv2 via PyTorch Geometric
-- **Frontend:** Streamlit
+- **Frontend:** Streamlit(Will change later maybe)
 - **Deployment:** HuggingFace Spaces (Docker, T4 GPU)
 - **Data storage:** HuggingFace Datasets
-
-## Limitations
-
-The model was trained exclusively on Kilter Board routes — standardized holds on a fixed board with consistent lighting. Gym climbing introduces significant domain shift: organic hold shapes, varied textures, real-world lighting, and different wall geometries. Current gym accuracy is limited (~3-4 V-grades average error) and will improve as more gym data is collected through the app.
-
-## Future Work
-
-- Fine-tune on collected gym data (targeting 50-100+ labeled routes)
-- SAM2-based hold segmentation for cleaner crops (experiment complete, code in `experiments/sam2_masking/`)
-- Multi-gym calibration and gym-specific grade curves
