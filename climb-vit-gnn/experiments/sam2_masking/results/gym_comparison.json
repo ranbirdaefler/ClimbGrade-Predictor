@@ -1,0 +1,86 @@
+[
+  {
+    "id": "17e4fa84356c",
+    "actual": "V0",
+    "old_predicted": "V5",
+    "sam2_predicted": "V5",
+    "sam2_difficulty": 21.3
+  },
+  {
+    "id": "1935d606e708",
+    "actual": "V7",
+    "old_predicted": "V6",
+    "sam2_predicted": "V7",
+    "sam2_difficulty": 23.0
+  },
+  {
+    "id": "1f6cffe216c8",
+    "actual": "V4",
+    "old_predicted": "V4",
+    "sam2_predicted": "V6",
+    "sam2_difficulty": 21.5
+  },
+  {
+    "id": "35d773dd9317",
+    "actual": "V1",
+    "old_predicted": "V4",
+    "sam2_predicted": "V4",
+    "sam2_difficulty": 18.6
+  },
+  {
+    "id": "46368a79a0e9",
+    "actual": "V1",
+    "old_predicted": "V8",
+    "sam2_predicted": "V6",
+    "sam2_difficulty": 21.8
+  },
+  {
+    "id": "60494942cda2",
+    "actual": "V1",
+    "old_predicted": "V8",
+    "sam2_predicted": "V11",
+    "sam2_difficulty": 27.6
+  },
+  {
+    "id": "6394767413c0",
+    "actual": "V1",
+    "old_predicted": "V4",
+    "sam2_predicted": "V4",
+    "sam2_difficulty": 18.6
+  },
+  {
+    "id": "6627bb88ce46",
+    "actual": "V4",
+    "old_predicted": "V9",
+    "sam2_predicted": "V10",
+    "sam2_difficulty": 27.4
+  },
+  {
+    "id": "8cf64b1591d3",
+    "actual": "V1",
+    "old_predicted": "V4",
+    "sam2_predicted": "V4",
+    "sam2_difficulty": 19.0
+  },
+  {
+    "id": "ad803f9d17fd",
+    "actual": "V1",
+    "old_predicted": "V5",
+    "sam2_predicted": "V6",
+    "sam2_difficulty": 21.8
+  },
+  {
+    "id": "d145c5e16117",
+    "actual": "V0",
+    "old_predicted": "V5",
+    "sam2_predicted": "V4",
+    "sam2_difficulty": 19.4
+  },
+  {
+    "id": "d695413bc880",
+    "actual": "V5",
+    "old_predicted": "V4",
+    "sam2_predicted": "V6",
+    "sam2_difficulty": 21.9
+  }
+]

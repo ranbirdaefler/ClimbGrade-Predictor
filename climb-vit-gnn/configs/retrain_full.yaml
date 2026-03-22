@@ -1,0 +1,43 @@
+data:
+  db_path: "data/kilter.db"
+  csv_path: "data/kilter_board.csv"
+  routes_path: "data/processed/all_routes.json"
+  embeddings_dir: "data/embeddings"
+  hold_crops_dir: "data/hold_crops"
+
+  val_size: 0.05
+  test_size: 0.0
+  random_seed: 42
+
+  min_ascents: 10
+  min_holds: 3
+  max_holds: 50
+
+vit:
+  model_name: "dinov2_vitb14"
+  embedding_dim: 768
+  device: "cuda"
+  batch_size: 128
+
+model:
+  proj_dim: 64
+  proj_dropout: 0.1
+  extra_feat_dim: 11
+  d_role_emb: 8
+  n_roles: 4
+  d_hidden: 64
+  n_heads: 4
+  n_layers: 3
+  edge_dim: 5
+  dropout: 0.15
+  pool: "mean+attention"
+
+training:
+  optimizer: "adamw"
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  scheduler: "cosine"
+  batch_size: 256
+  max_epochs: 1000
+  patience: 50
+  num_workers: 0

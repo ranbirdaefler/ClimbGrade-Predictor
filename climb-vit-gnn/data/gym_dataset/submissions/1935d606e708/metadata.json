@@ -1,0 +1,43 @@
+{
+  "id": "1935d606e708",
+  "timestamp": "2026-03-21T19:13:06.053441+00:00",
+  "image_filename": "wall_photo.jpg",
+  "image_width": 408,
+  "image_height": 544,
+  "holds": [
+    {
+      "tap_x": 375,
+      "tap_y": 427,
+      "role": "foot"
+    },
+    {
+      "tap_x": 318,
+      "tap_y": 202,
+      "role": "hand"
+    },
+    {
+      "tap_x": 214,
+      "tap_y": 358,
+      "role": "hand"
+    },
+    {
+      "tap_x": 42,
+      "tap_y": 219,
+      "role": "hand"
+    },
+    {
+      "tap_x": 130,
+      "tap_y": 383,
+      "role": "volume"
+    },
+    {
+      "tap_x": 63,
+      "tap_y": 38,
+      "role": "finish"
+    }
+  ],
+  "wall_angle": 0,
+  "predicted_grade": "V6",
+  "predicted_difficulty": 21.756,
+  "actual_grade": "V7"
+}

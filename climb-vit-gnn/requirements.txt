@@ -1,0 +1,13 @@
+torch>=2.0
+torch-geometric>=2.4
+torch-scatter
+torch-sparse
+torchvision>=0.15
+pandas
+numpy
+Pillow
+tqdm
+pyyaml
+matplotlib
+boardlib
+scikit-learn
