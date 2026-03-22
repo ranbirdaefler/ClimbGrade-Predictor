@@ -2,7 +2,7 @@
 
 Upload a photo of a climbing route, tap the holds, and get an AI-predicted V-grade. Built to give climbers an unbiased second opinion on route difficulty, independent of gym setting.
 
-**Try it live:** [v2inmygym.net](v2inmygym.net)
+**Try it live:** [https://v2inmygym.net](https://v2inmygym.net/)
 
 ## How It Works
 
