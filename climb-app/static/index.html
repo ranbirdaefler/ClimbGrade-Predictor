@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/styles.css?v=3">
+  <link rel="stylesheet" href="/static/styles.css?v=4">
 </head>
 <body>
 <div class="bg" aria-hidden="true"></div>
@@ -50,7 +50,7 @@
   <div class="stats" aria-label="Model facts">
     <div class="stat"><b>35,000+</b><span>training routes</span></div>
     <div class="stat"><b>V0 – V13</b><span>grade range</span></div>
-    <div class="stat"><b>3× GATv2</b><span>attention layers</span></div>
+    <div class="stat"><b>v2</b><span>tuned on real gym routes</span></div>
   </div>
 </header>
 
@@ -157,7 +157,7 @@
     <div class="card result hidden" id="result">
       <div class="label">The model says this is a</div>
       <div class="grade" id="r-grade">V?</div>
-      <div class="range">Could be anywhere from <b id="r-low">V?</b> to <b id="r-high">V?</b></div>
+      <div class="range">Likely somewhere between <b id="r-low">V?</b> and <b id="r-high">V?</b></div>
       <div class="scale">
         <div class="bar">
           <div class="band" id="r-band"></div>
@@ -187,22 +187,22 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
       <div class="k">01 · SEE</div>
       <h3>Every hold gets embedded</h3>
-      <p>Your tap seeds a colour segmentation in LAB space that finds the hold's outline. The crop goes through a frozen DINOv2 ViT-B/14, which turns shape, texture and size into a 768-dimensional vector.</p>
+      <p>Your tap seeds a colour segmentation in LAB space that finds the hold's outline. The wall around it is masked out and the crop goes through a frozen DINOv2 ViT-B/14, which turns shape, texture and size into a 768-dimensional vector.</p>
       <span class="tag">DINOv2 ViT-B/14 · 768-d</span>
     </div>
     <div class="how-card">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="18" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="19" cy="14" r="2"/><path d="M6.5 16.5 10.5 7.5M13.8 7l3.8 5.5M7 18h10"/></svg>
       <div class="k">02 · CONNECT</div>
       <h3>The route becomes a graph</h3>
-      <p>Holds are nodes carrying their embedding, role and position. Every pair is joined by an edge that encodes distance and direction, so the network sees moves, not just holds. Wall angle rides along as a global feature.</p>
+      <p>Holds are nodes carrying their embedding, role and position. Every pair is joined by an edge that encodes distance and direction relative to the route itself, so the network sees moves, not pixels, whatever the photo framing. Wall angle rides along as a global feature.</p>
       <span class="tag">fully connected · 5-d edges</span>
     </div>
     <div class="how-card">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 18 9 8l3 6 3-9 5 13"/></svg>
       <div class="k">03 · JUDGE</div>
       <h3>Attention reads the climb</h3>
-      <p>Three GATv2 layers with four heads each pass information between holds, then attentional pooling collapses the route into one difficulty score. Trained on 35,000+ community-graded Kilter Board routes.</p>
-      <span class="tag">GATv2 · 255K params · MAE 1.2</span>
+      <p>Three GATv2 layers pass information between holds, then attentional pooling turns the route into a full distribution over grades. An ensemble of three networks is pre-trained on 35,000+ community-graded Kilter Board routes, then fine-tuned on real gym routes that climbers graded through this site.</p>
+      <span class="tag">GATv2 ensemble · 21-bin grade distribution</span>
     </div>
   </div>
 </section>
@@ -219,6 +219,6 @@
 
 <div class="toast" id="toast" role="alert"></div>
 
-<script src="/static/app.js?v=3"></script>
+<script src="/static/app.js?v=4"></script>
 </body>
 </html>

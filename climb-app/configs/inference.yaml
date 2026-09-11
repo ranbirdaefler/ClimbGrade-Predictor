@@ -1,5 +1,5 @@
 model:
-  checkpoint: "models/deployment_model.pt"
+  checkpoint: "models/deployment_v2.pt"
   device: "auto"
 
 vit:

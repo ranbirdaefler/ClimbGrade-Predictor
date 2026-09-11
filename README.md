@@ -4,6 +4,10 @@ Upload a photo of a climbing route, tap the holds, and get an AI-predicted V-gra
 
 **Try it live:** [https://v2inmygym.net](https://v2inmygym.net/)
 
+## Model v2 (September 2026)
+
+The deployed model is now **ClimbGNN v2**: the same DINOv2 + GATv2 idea, rebuilt to transfer from board renders to gym photos (scale-invariant route geometry, photo-like augmentation of the Kilter renders, a trained foot role, hold-attribute auxiliary heads, a distributional grade head) and fine-tuned on real gym routes collected through the site. On a photo-grouped 5-fold cross-validation over the labeled gym routes it reaches **MAE 1.34 V-grades** (v1: 2.29) with Spearman 0.64 (v1: 0.30); the same fine-tuning from random init only reaches 1.92, so the Kilter pre-training is doing real work. Full results, controls and caveats: [`climb-vit-gnn/v2/FINDINGS.md`](climb-vit-gnn/v2/FINDINGS.md). Code: [`climb-vit-gnn/v2/`](climb-vit-gnn/v2/).
+
 ## How It Works
 
 The system uses a two-stage pipeline: a vision model to understand individual holds, and a graph neural network to reason about the route as a whole.

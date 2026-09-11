@@ -1,0 +1,4 @@
+climb-vit-gnn/data/embeddings_v2/*.npy
+climb-vit-gnn/data/embeddings_v2/*.npz
+__pycache__/
+*.pyc

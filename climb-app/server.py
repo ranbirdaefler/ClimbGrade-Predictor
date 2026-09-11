@@ -201,7 +201,8 @@ def health() -> dict:
         return {"status": "error", "detail": _model["error"]}
     if _model["predictor"] is None:
         return {"status": "loading"}
-    return {"status": "ready", "device": _model["device"], "load_s": _model["load_s"]}
+    return {"status": "ready", "device": _model["device"], "load_s": _model["load_s"],
+            "model": _model["predictor"].describe()}
 
 
 @app.post("/api/session")
@@ -251,8 +252,6 @@ def predict(req: PredictIn) -> dict:
     if predictor is None:
         raise HTTPException(503, "The model is still warming up. Try again in a moment.")
 
-    from src.inference.predict import _difficulty_to_vgrade
-
     session = _get_session(req.session_id)
     image = session["np"]
     h, w = image.shape[:2]
@@ -265,8 +264,7 @@ def predict(req: PredictIn) -> dict:
     elapsed_ms = int((time.perf_counter() - t0) * 1000)
 
     difficulty = float(result["difficulty"])
-    low = _difficulty_to_vgrade(difficulty - 1.0)
-    high = _difficulty_to_vgrade(difficulty + 1.0)
+    low, high = result["low"], result["high"]
 
     # Persist once per unique (holds, angle) so repeated clicks don't duplicate.
     fingerprint = repr([(hd["tap_x"], hd["tap_y"], hd["role"]) for hd in holds_info]) + repr(wall_angle)

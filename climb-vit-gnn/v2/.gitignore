@@ -1,0 +1,5 @@
+# large or reproducible artefacts (see FINDINGS.md "Reproduce")
+runs/rand_s*/
+runs/*/deployment_v2.pt
+!runs/adapt_gm_proj/deployment_v2.pt
+runs/*.log
