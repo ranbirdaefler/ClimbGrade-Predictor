@@ -1,0 +1,21 @@
+model:
+  checkpoint: "models/deployment_model.pt"
+  device: "auto"
+
+vit:
+  model_name: "dinov2_vitb14"
+  embedding_dim: 768
+
+crop:
+  base_radius: 40
+  min_crop_size: 64
+  max_crop_size: 400
+  output_size: 224
+  color_distance_threshold: 40
+  min_hold_area_fraction: 0.05
+  expansion_steps: 5
+  expansion_pixels: 8
+  padding_fraction: 0.25
+
+inference:
+  default_wall_angle: 30

@@ -1,0 +1,12 @@
+torch>=2.0
+torchvision>=0.15
+torch-geometric>=2.4
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-multipart
+Pillow
+numpy
+opencv-python-headless
+scikit-image
+pyyaml
+huggingface_hub

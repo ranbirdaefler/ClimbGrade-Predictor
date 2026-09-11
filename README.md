@@ -83,7 +83,7 @@ User uploads wall photo
 
 ## The App
 
-The web app is built with **Streamlit** and deployed on **HuggingFace Spaces** with a T4 GPU.
+The web app is a hand-written single-page frontend (canvas hold picker, no framework) served by a **FastAPI** backend, deployed as a Docker Space on **HuggingFace Spaces**. Source lives in [`climb-app/`](climb-app/).
 
 **User flow:**
 1. Upload or snap a photo of a climbing wall
@@ -97,8 +97,13 @@ The web app is built with **Streamlit** and deployed on **HuggingFace Spaces** w
 ## Project Structure
 
 ```
-climb-pred/
-├── app.py                      # Streamlit web app
+climb-app/
+├── server.py                   # FastAPI backend + static hosting
+├── static/
+│   ├── index.html              # Single-page frontend
+│   ├── app.js                  # Canvas hold picker, prediction + feedback flow
+│   ├── styles.css
+│   └── samples/                # Demo walls
 ├── configs/
 │   └── inference.yaml          # Model and crop config
 ├── src/
@@ -108,8 +113,7 @@ climb-pred/
 │   │   ├── graph.py            # PyG graph construction
 │   │   ├── model.py            # GATv2 GNN architecture
 │   │   └── predict.py          # Full inference pipeline
-│   ├── feedback.py             # Data collection + HF sync
-│   └── logo_b64.py             # Embedded logo
+│   └── feedback.py             # Data collection + HF sync
 ├── models/
 │   └── deployment_model.pt     # Trained model checkpoint
 ├── Dockerfile                  # HF Spaces deployment
@@ -120,6 +124,7 @@ climb-pred/
 
 - **Vision:** DINOv2 ViT-B/14 (Meta)
 - **GNN:** GATv2 via PyTorch Geometric
-- **Frontend:** Streamlit(Will change later maybe)
-- **Deployment:** HuggingFace Spaces (Docker, T4 GPU)
+- **Backend:** FastAPI + Uvicorn
+- **Frontend:** Vanilla HTML / CSS / JS (canvas hold picker, no build step)
+- **Deployment:** HuggingFace Spaces (Docker)
 - **Data storage:** HuggingFace Datasets

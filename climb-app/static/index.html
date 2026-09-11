@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>V2 In My Gym — Is your gym soft?</title>
+  <meta name="description" content="Snap a photo of a climbing route, tap the holds, and get an AI-predicted V-grade. DINOv2 + graph neural network trained on 35,000+ routes.">
+  <meta name="theme-color" content="#0a0a0c">
+  <link rel="icon" href="/static/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="/static/logo.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="V2 In My Gym — Is your gym soft?">
+  <meta property="og:description" content="Tap the holds on a route photo and an AI climber grades it for you. DINOv2 + GATv2 graph neural network.">
+  <meta property="og:image" content="https://v2inmygym.net/static/logo.png">
+  <meta property="og:url" content="https://v2inmygym.net/">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css?v=3">
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/static/logo.png" alt="">
+      V2 <span>in my gym</span>
+    </a>
+    <div class="nav-right">
+      <a class="link" href="#how">How it works</a>
+      <a class="link" href="https://github.com/ranbirdaefler/ClimbGrade-Predictor" target="_blank" rel="noopener">GitHub</a>
+      <div class="status" id="status" role="status"><i class="dot"></i><span>warming up model</span></div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <img class="logo" src="/static/logo.png" alt="V2 In My Gym logo: half brain, half orange, V2">
+  <div class="eyebrow"><i></i>AI route grader · DINOv2 + graph neural net</div>
+  <h1>Is your gym <em>soft?</em></h1>
+  <p class="lede">Snap the wall, tap the holds, and get a second opinion on the grade from a model that has never met your setter.</p>
+  <div class="cta-row">
+    <a class="btn primary" href="#studio" id="cta-start">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      Grade a route
+    </a>
+    <button class="btn" id="cta-demo" type="button">Try a demo wall</button>
+  </div>
+  <div class="stats" aria-label="Model facts">
+    <div class="stat"><b>35,000+</b><span>training routes</span></div>
+    <div class="stat"><b>V0 – V13</b><span>grade range</span></div>
+    <div class="stat"><b>3× GATv2</b><span>attention layers</span></div>
+  </div>
+</header>
+
+<main class="studio wrap" id="studio">
+  <section class="stage" id="stage" aria-label="Wall photo">
+    <!-- Empty state -->
+    <div class="dropzone" id="dropzone">
+      <div class="art">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l4.5-5 3.5 4 2.5-3L20 16"/><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="9" r="1.5"/></svg>
+      </div>
+      <h2>Drop a wall photo</h2>
+      <p>Get the whole route in frame. JPG, PNG or WEBP. Photos are stored to improve the model.</p>
+      <div class="actions">
+        <button class="btn primary" id="btn-upload" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>
+          Upload photo
+        </button>
+        <button class="btn" id="btn-camera" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          Take a photo
+        </button>
+      </div>
+      <div class="demo-row">
+        <span>or try a demo:</span>
+        <button class="chip" type="button" data-demo="red"><img src="/static/samples/red.jpg" alt="">Red route · vertical</button>
+        <button class="chip" type="button" data-demo="steep"><img src="/static/samples/steep.jpg" alt="">Rainbow · 45° overhang</button>
+      </div>
+    </div>
+
+    <!-- Loaded state -->
+    <div class="canvas-wrap hidden" id="canvas-wrap">
+      <canvas id="wall" aria-label="Tap the holds on your route"></canvas>
+      <div class="stage-tools">
+        <div class="glass count"><b id="count">0</b>&nbsp;holds</div>
+        <div class="tools-group">
+          <button class="glass" id="btn-undo" type="button" title="Undo last hold (Ctrl+Z)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>
+            Undo
+          </button>
+          <button class="glass" id="btn-clear" type="button" title="Remove all holds">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+            Clear
+          </button>
+          <button class="glass" id="btn-change" type="button" title="Use a different photo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M4 16l4.5-5 3.5 4 2.5-3L20 16"/></svg>
+            Photo
+          </button>
+        </div>
+      </div>
+      <div class="stage-hint" id="hint"><b>Tap each hold</b> on the route · tap a marker again to remove it</div>
+      <div class="stage-loading hidden" id="stage-loading"><div class="spinner"></div>Reading photo…</div>
+    </div>
+    <input type="file" id="file" accept="image/*" class="hidden">
+    <input type="file" id="file-cam" accept="image/*" capture="environment" class="hidden">
+  </section>
+
+  <aside class="panel">
+    <div class="card">
+      <div class="step">
+        <span class="n">02</span>
+        <h3>Mark the holds</h3>
+        <span class="meta" id="holds-meta">min 3</span>
+      </div>
+      <div class="holds" id="holds"></div>
+      <div class="legend" id="legend">
+        <span style="--c:var(--start)"><i></i>Start</span>
+        <span style="--c:var(--hand)"><i></i>Hand</span>
+        <span style="--c:var(--finish)"><i></i>Finish</span>
+        <span style="--c:var(--foot)"><i></i>Foot</span>
+        <span style="--c:var(--volume)"><i></i>Volume</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="step">
+        <span class="n">03</span>
+        <h3>Wall angle</h3>
+      </div>
+      <div class="angle">
+        <svg viewBox="0 0 72 64" aria-hidden="true">
+          <line x1="4" y1="56" x2="68" y2="56" stroke="rgba(255,255,255,.18)" stroke-width="2" stroke-linecap="round"/>
+          <g class="wall-line" id="wall-line">
+            <line x1="62" y1="56" x2="62" y2="8" stroke="#8a8a96" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="62" cy="40" r="2.2" fill="#ff8a3d"/>
+            <circle cx="62" cy="24" r="2.2" fill="#4da3ff"/>
+            <circle cx="62" cy="12" r="2.2" fill="#ff4b4b"/>
+          </g>
+        </svg>
+        <div>
+          <div class="angle-val"><b id="angle-num">30°</b><span id="angle-desc">moderate overhang</span></div>
+          <input type="range" id="angle" min="0" max="70" step="5" value="30" aria-label="Wall angle in degrees overhanging">
+          <div class="ticks"><span>vertical</span><span>steep</span><span>roof</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card grade-card">
+      <button class="btn primary big" id="btn-grade" type="button" disabled>
+        <span id="grade-label">Add a photo to begin</span>
+      </button>
+      <p class="note" id="grade-note">Inference runs on CPU — expect a couple of seconds.</p>
+    </div>
+
+    <div class="card result hidden" id="result">
+      <div class="label">The model says this is a</div>
+      <div class="grade" id="r-grade">V?</div>
+      <div class="range">Could be anywhere from <b id="r-low">V?</b> to <b id="r-high">V?</b></div>
+      <div class="scale">
+        <div class="bar">
+          <div class="band" id="r-band"></div>
+          <div class="pin" id="r-pin"></div>
+        </div>
+        <div class="ticks"><span>V0</span><span>V3</span><span>V6</span><span>V9</span><span>V13</span></div>
+      </div>
+      <div class="facts" id="r-facts"></div>
+      <div class="divider"></div>
+      <h4>So… was it right?</h4>
+      <p class="sub">Tap the grade your gym gave it. Every answer trains the next version.</p>
+      <div class="grade-grid" id="grade-grid"></div>
+      <div class="verdict hidden" id="verdict"></div>
+      <div class="result-actions">
+        <button class="btn sm" id="btn-copy" type="button">Copy verdict</button>
+        <button class="btn sm ghost" id="btn-again" type="button">Grade another route</button>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<section class="how wrap" id="how">
+  <h2>How it works</h2>
+  <p class="intro">Two models, one route. A vision transformer looks at each hold, a graph network reads the route as a whole. No hand-written rules about what makes a climb hard.</p>
+  <div class="how-grid">
+    <div class="how-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+      <div class="k">01 · SEE</div>
+      <h3>Every hold gets embedded</h3>
+      <p>Your tap seeds a colour segmentation in LAB space that finds the hold's outline. The crop goes through a frozen DINOv2 ViT-B/14, which turns shape, texture and size into a 768-dimensional vector.</p>
+      <span class="tag">DINOv2 ViT-B/14 · 768-d</span>
+    </div>
+    <div class="how-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="18" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="19" cy="14" r="2"/><path d="M6.5 16.5 10.5 7.5M13.8 7l3.8 5.5M7 18h10"/></svg>
+      <div class="k">02 · CONNECT</div>
+      <h3>The route becomes a graph</h3>
+      <p>Holds are nodes carrying their embedding, role and position. Every pair is joined by an edge that encodes distance and direction, so the network sees moves, not just holds. Wall angle rides along as a global feature.</p>
+      <span class="tag">fully connected · 5-d edges</span>
+    </div>
+    <div class="how-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 18 9 8l3 6 3-9 5 13"/></svg>
+      <div class="k">03 · JUDGE</div>
+      <h3>Attention reads the climb</h3>
+      <p>Three GATv2 layers with four heads each pass information between holds, then attentional pooling collapses the route into one difficulty score. Trained on 35,000+ community-graded Kilter Board routes.</p>
+      <span class="tag">GATv2 · 255K params · MAE 1.2</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Predictions are a model's opinion, not a setter's. Photos and hold positions are saved to fine-tune future versions.</div>
+    <div class="links">
+      <a href="https://github.com/ranbirdaefler/ClimbGrade-Predictor" target="_blank" rel="noopener">Source on GitHub</a>
+      <a href="https://huggingface.co/spaces/ranbirr1/climb-grade-predictor" target="_blank" rel="noopener">Hugging Face Space</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="alert"></div>
+
+<script src="/static/app.js?v=3"></script>
+</body>
+</html>
